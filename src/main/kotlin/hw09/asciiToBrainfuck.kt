@@ -5,7 +5,7 @@ package hw09
  */
 
 public  class AsciiToBrainfuck {
-    public fun translate(input : String, magickalNumber : Int = 105) : String{
+    public fun translate(input : String, magickalNumber : Int? = 105) : String{
         if (input == "") return ""
         val res = StringBuilder()
 
@@ -23,7 +23,7 @@ public  class AsciiToBrainfuck {
             len--
         }
 
-        val mean = magickalNumber
+        val mean = magickalNumber ?: sum / input.length
         var m : Int = mean
         res.append("[[>]")
         while (m > 0) {
@@ -49,7 +49,6 @@ public  class AsciiToBrainfuck {
             }
             res.append(".>")
         }
-        val leng = res.length
         return res.toString()
     }
 }
