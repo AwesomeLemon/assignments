@@ -5,7 +5,7 @@ package hw09
  */
 
 public  class AsciiToBrainfuck {
-    public fun translate(input : String, magickalNumber : Int? = 105) : String{
+    public fun translateUpTo255symbols(input : String, magickalNumber : Int? = 105) : String{
         if (input == "") return ""
         val res = StringBuilder()
 
@@ -48,6 +48,36 @@ public  class AsciiToBrainfuck {
                 count++
             }
             res.append(".>")
+        }
+        res.append(">>>>>")
+        return res.toString()
+    }
+
+    //will work slighly better on English words and
+    //significntly better on non-English gibberish
+    public fun translateChooseBest(input : String) : Pair<String, Int> {
+        var res = ""
+        var minLen = Int.MAX_VALUE
+        var bestI = -1
+        for (i in 1..255) {
+            val curRes = translateUpTo255symbols(input, i)
+            if (curRes.length < minLen) {
+                minLen = curRes.length
+                bestI = i
+                res = curRes
+            }
+        }
+        return Pair(res, bestI)
+    }
+
+    public fun translate(input : String) : String {
+        if (input.length <= 255) return translateChooseBest(input).first
+        val sb = StringBuilder(input)
+        val res = StringBuilder()
+        val len = input.length
+        for (i in 0 .. len / 255) {
+            val curRes = translateChooseBest(sb[i * 255, Math.min((i + 1) * 255, len)].toString())
+            res.append(curRes.first)
         }
         return res.toString()
     }
